@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<button id="btn_A">8863</button>
+<button id="btn_B">2921983</button>
+
+<script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+<script>
+
+	// JenkinsとかCIで書き出すJSONたち
+	var conf = {
+		baseURL: 'https://hacker-news.firebaseio.com/v0/item/',
+		timeout: 1000
+	};
+	var apis = {
+		'8863': {
+			url: '8863.json',
+			type: 'get'
+		},
+		'2921983': {
+			url: '2921983.json',
+			type: 'get'
+		}
+	};
+
+	// エイリアス
+	var $A = document.querySelector('#btn_A');
+	var $B = document.querySelector('#btn_B');
+
+	// ajaxのラッパーメソッド
+	var ajax = (function () {
+		var instance = axios.create(conf);
+		var ret = {};
+
+		Object.keys(apis).forEach(function (key) {
+			ret[key] = function(aParams) {
+				var obj = apis[key];
+				var params = aParams || {};
+				return instance[obj.type](obj.url, params);
+			};
+		});
+		return ret;
+	}());
+
+	// イベント処理
+	$A.addEventListener('click', function () {
+		ajax['8863']({
+			pretty: true
+		}).then(function(res) {
+			console.log(res.data);
+		}).catch(function(err) {
+			console.error(err.data.error);
+		});
+	}, false);
+
+	$B.addEventListener('click', function () {
+		ajax['2921983']({
+			pretty: true
+		}).then(function(res) {
+			console.log(res.data);
+		}).catch(function(err) {
+			console.error(err.data.error);
+		});
+	}, false);
+
+
+</script>
+</body>
+</html>

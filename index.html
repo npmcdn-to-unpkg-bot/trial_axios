@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+<script>
+
+	// 普通に通信
+//	axios({
+//		method: 'get',
+//		url   : 'api.json'
+//	}).then(function (res) {
+//		console.log(res.data);
+//	});
+
+	// インスタンス化
+	var ajax = axios.create({
+		baseURL: 'https://hacker-news.firebaseio.com/v0/itemm/',
+		timeout: 1000
+	});
+
+	// インスタンスを使ったajax
+//	ajax.get('/8863.json')
+//		.then(function (res) {
+//			console.log(res.data);
+//		});
+
+	// パラメータを与えてみる
+	ajax.get('/8863.json', {
+		params: {
+			print: 'pretty'
+		}
+	}).then(function (res) {
+		console.log(res);
+	})
+	.catch(function (err) {
+		console.log(err);
+	});
+
+
+
+</script>
+</body>
+</html>
